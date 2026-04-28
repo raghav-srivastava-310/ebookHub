@@ -28,12 +28,12 @@ function ProductContext({ children }) {
   }
   const removeWhislistItem = (id) => {
     const stored = JSON.parse(localStorage.getItem("Whishlist")) || [];
-    const update = stored.filter((product) => product.id !== id);
+    const update = stored.filter((product) => product._id !== id);
     localStorage.setItem("Whishlist", JSON.stringify(update));
     setWhishList(update);
   }
   const isInWhishlist = (id) => {
-    return whishlist.some((product) => product.id === id);
+    return whishlist.some((product) => product._id === id);
   }
 
   //Add to cart functionality
@@ -45,12 +45,12 @@ function ProductContext({ children }) {
   }
   const removeCart = (item) => {
     const storeItem = JSON.parse(localStorage.getItem("ProductInfo"));
-    const update = storeItem.filter((product) => product.id !== item.id);
+    const update = storeItem.filter((product) => product._id !== item._id);
     localStorage.setItem("ProductInfo", JSON.stringify(update));
     setCartItem(update);
   }
   const isInCart = (id) => { 
-    return cartItem.some((product) => product.id === id);
+    return cartItem.some((product) => product._id === id);
   }
   const TotalPrice = () => {
     return cartItem.reduce((acc, product) => {
