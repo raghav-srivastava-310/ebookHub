@@ -115,7 +115,7 @@ export default function AllBooks() {
                 
                 <h3 className="mb-2 text-lg font-bold text-slate-900 line-clamp-1 group-hover:text-indigo-600 transition-colors">
                   {book.title}
-                </h3>
+                </h3> 
                 
                 <p className="text-sm text-slate-500 line-clamp-2 flex-1 leading-relaxed">
                   {book.description || "No description provided for this book. Please add one to give more context."}
