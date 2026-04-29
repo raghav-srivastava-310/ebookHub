@@ -18,30 +18,28 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [ValidationError, setValidationError] = useState("");
-  const [captchaInput, setCaptchaInput] = useState("");
-  const [captchaImage, setCaptchaImage] = useState("");
+  // const [captchaInput, setCaptchaInput] = useState("");
+  // const [captchaImage, setCaptchaImage] = useState("");
   const router = useRouter();
-  useEffect(()=>{
-    fetchCaptcha();
-  },[]);
-  const fetchCaptcha = async ()=>{
-    const res = await api.get("/api/auth/captcha");
-  console.log("the response is",res)
-    const svg = await res.data;
+  // useEffect(()=>{
+  //   fetchCaptcha();
+  // },[]);
+  // const fetchCaptcha = async ()=>{
+  //   const res = await api.get("/api/auth/captcha");
+  // console.log("the response is",res)
+  //   const svg = await res.data;
     
-    setCaptchaImage(svg);
-  }
+  //   setCaptchaImage(svg);
+  // }
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const store = JSON.parse(localStorage.getItem("FormInfo")) || [];
-    // store.push(formData);
-    // localStorage.setItem("FormInfo", JSON.stringify(store));
-    const response = await api.post("/api/auth/signup",{
+
+   try {
+     const response = await api.post("/api/auth/signup",{
       ...formData,
-      userCaptcha: captchaInput
     });
     const data = response.data;
     if(data.success){
@@ -52,6 +50,10 @@ function Signup() {
     if(data.error){
       setValidationError(data.error);
     }
+   } catch (error) {
+    console.log("Signup error",error.response.data);
+    setError(error.response.data.message || error.response.data.error || "An error occurred during signup");
+   }
   }
   useEffect(() => {
     if (formData.confirmPassword.length > 0) {
@@ -123,13 +125,13 @@ function Signup() {
               placeholder='Confirm Password' className={`max-w-108 min-h-8 outline-none border border-[#d7d6d6] w-full ${formData.confirmPassword.length > 0 && (checkPassword ? "border border-[#d7d6d6]" : "border border-red-500 ")}    p-2`} />
           </div>
 
-            <div>
+           {/* <div>
               <div className='flex items-center gap-4'>
                 <input type="text" id='captcha' name='captchaInput' value={captchaInput} onChange={(e)=>setCaptchaInput(e.target.value)} placeholder='Enter Captcha' className='max-w-108 min-h-8 w-full border border-[#d7d6d6] p-2' />
               <div dangerouslySetInnerHTML={{__html:captchaImage}} />
                 <button type='button' onClick={fetchCaptcha} className='px-3 cursor-pointer py-1 text-white bg-gray-500 border-none font-medium text-[14px] tracking-wide'>Refresh</button>
               </div>
-            </div>
+            </div>*/}
 
           <div className='mt-4 font-bold relative'>
             <input type="checkbox" required id='checkbox' className='' />
@@ -138,7 +140,7 @@ function Signup() {
           <div className='flex justify-center mt-4 mb-4 mx-35'>
             <button
               type='submit'
-              className='px-10.5 py-2.5 text-white bg-black border-none mr-4 font-medium text-[16px] tracking-wide' >
+              className='px-10.5 py-2.5 cursor-pointer text-white bg-black border-none mr-4 font-medium text-[16px] tracking-wide' >
               Register
             </button>
           </div>
