@@ -5,45 +5,17 @@ import Link from "next/link";
 import { ShoppingCart, User, Heart, Menu, House,Dot } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "@/Context/ProductContext";
-import { usePathname, useRouter } from "next/navigation";
-import api from "@/app/api/axios";
+import {  useRouter } from "next/navigation";
+
 
 
 export default function Header() {
-  const { whishlist, cartItem } = useContext(Context);
-  const [user,setUser] = useState({});
+  const { whishlist, cartItem,user,isUserPresent } = useContext(Context);
   const [isMobile, setIsMobile] = useState(false);
-  const [isUserPresent,setIsUserPresent] = useState(false)
   const [isAnimating,setAnimating]= useState(false);
   const [openProfile,setOpenProfile] = useState(false)
-  const pathname = usePathname();
-  const router = useRouter();
 
-  // useEffect(() => {
-  //   const stored = JSON.parse(localStorage.getItem("accessToken")) || "";
-  //   setInfo(stored);
-  // }, [pathname]);
-   
-  const fetchUser = async ()=>{
-   try {
-    const res = await api.get("/api/auth/get-me")
-    const data =  res.data;
-    setUser(data.userDetail)
-      console.log("the data is",data)
-   } catch (error) {
-    console.log("Error while fetch user",error.message)
-   }
-    
-  }
-  useEffect(()=>{
-   const userToken =  localStorage.getItem("accessToken");
-   console.log(pathname)
-   if(userToken){
-    setIsUserPresent(true);
-     fetchUser();
-   }
-  
-  },[pathname])
+  const router = useRouter();
 
   useEffect(() => {
   if (isMobile) {
@@ -127,7 +99,7 @@ const closeMenu = () => {
             <Link href="/cart" className="hidden md:block relative">
               <ShoppingCart className="w-5 h-5 cursor-pointer hover:text-yellow-300 transition" />
               <span className="absolute -top-2 -right-2 text-xs bg-yellow-400 text-black px-1 rounded-full">
-                {cartItem.length}
+                {cartItem.length||0}
               </span>
             </Link>
             {isUserPresent ? (<button onClick={()=>{
@@ -165,7 +137,7 @@ const closeMenu = () => {
         <Link href="/cart" className="relative">
           <ShoppingCart className="w-5 h-5 cursor-pointer hover:text-yellow-300 transition" />
           <span className="absolute -top-2 -right-2 text-xs bg-yellow-400 text-black px-1 rounded-full">
-            {cartItem.length}
+            {cartItem.length||0}
           </span>
         </Link>
 

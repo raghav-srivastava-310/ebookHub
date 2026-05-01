@@ -27,14 +27,12 @@ function Signin() {
        })
        localStorage.setItem("accessToken",JSON.stringify(data.accessToken))
          router.push("/");
-      }else{
-
-        setError(data.message || "Login failed. Please try again.");
       }
 
       console.log("Login response:", data);
     } catch (error) {
-      console.log("Error during login:", error);
+      setError(error.response?.data?.message || error.response.data.error || "An error occurred during login. Please try again.");
+      
     }
   }
   return (
@@ -87,7 +85,7 @@ function Signin() {
               router.push("/");
              } catch (error) {
               console.log("Error during Google login:", error);
-             }
+             } 
             }}
             onError={(err)=>{
               console.log("Google login error:", err);

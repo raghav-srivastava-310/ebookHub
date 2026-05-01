@@ -4,28 +4,83 @@ import Image from 'next/image';
 import React, { useContext } from 'react'
 import { useState } from 'react';
 import Link from 'next/link';
+import api from '@/app/api/axios';
+import { useRouter } from 'next/navigation';
 const initialValue = {
-  name:"",
-  email:"",
-  address:"",
-  bill_area:"",
-  phone:"",
-  bill_city:""
+  name: "",
+  email: "",
+  address: "",
+  bill_area: "",
+  phone: "",
+  bill_city: ""
 }
+
 
 function Checkout() {
   const [open, setIsOpen] = useState(false);
   const [open1, setIsOpen1] = useState(false);
-  const { cartItem, TotalPrice,setCartItem } = useContext(Context);
-  const [billData,setBillData]=useState(initialValue)
-  const handleClick = ()=>{
-    setCartItem([]);
-    localStorage.setItem("ProductInfo",JSON.stringify([]));
+  const { cartItem, TotalPrice, setCartItem } = useContext(Context);
+  const [billData, setBillData] = useState(initialValue)
+  const router = useRouter()
+ 
+  const handleChange = (e) => {
+    setBillData({ ...billData, [e.target.name]: e.target.value });
   }
-  const handleChange = (e)=>{
-  setBillData({...billData,[e.target.name]:e.target.value});
+
+  const loadScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      document.body.appendChild(script);
+    });
   }
-  
+
+  const handlePayment = async () => {
+    const res = await loadScript();
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+
+    try {
+      // Call backend to create order
+      const res = await api.post("/api/payment/createOrder");
+      const data = res.data;
+      console.log("the order data is", data)
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: data.order.amount,
+        currency: "INR",
+        name: "EbookHub Store",
+        description: "Book Purchase",
+        order_id: data.order.id,
+        handler: async function (response) {
+          // Verify payment on the server
+          const verifyRes = await api.post("/api/payment/verifyPayment", response);
+          const verifyData = verifyRes.data;
+          if (verifyData.success) {
+            alert("Payment successful! Your order has been placed.");
+            setCartItem([]);
+            localStorage.setItem("ProductInfo", JSON.stringify([]));
+            router.push("/");
+          } else {
+            alert("Payment verification failed. Please contact support.");
+          }
+        },
+        theme: {
+          color: "#000",
+        },
+      };
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    }
+    catch (error) {
+      console.log("Payment failed:", error);
+      alert("Payment failed. Please try again.");
+    }
+  };
+
   return (
     <div className='md:px-20 m-0 px-2 md:py-2'>
       <div className='flex flex-col md:flex-row gap-8'>
@@ -72,30 +127,30 @@ function Checkout() {
                 <input type="text" required placeholder='Last Name' className='w-full border border-black py-2 px-2' />
               </div>
               <div className='flex gap-4'>
-                <input type="email" required placeholder='Email' name='email' value={billData.email} onChange={handleChange}   className='w-full border border-black py-2 px-2' />
-                <input type="tel" name='phone' value={billData.phone} onChange={handleChange}   placeholder='Phone' className='w-full border border-black py-2 px-2' />
+                <input type="email" required placeholder='Email' name='email' value={billData.email} onChange={handleChange} className='w-full border border-black py-2 px-2' />
+                <input type="tel" name='phone' value={billData.phone} onChange={handleChange} placeholder='Phone' className='w-full border border-black py-2 px-2' />
               </div>
               <div>
-                <textarea className='w-full py-1 px-2 border border-black' name='address' value={billData.address} onChange={handleChange}   required placeholder='Address'>
-                  
+                <textarea className='w-full py-1 px-2 border border-black' name='address' value={billData.address} onChange={handleChange} required placeholder='Address'>
+
                 </textarea>
               </div>
               <div>
                 <select name="country" disabled className='w-full bg-gray-200 py-2 px-2'>
                   <option value="India">India</option>
-                 
+
                 </select>
               </div>
               <div className='flex gap-4'>
                 <select name="state" disabled className='w-full bg-gray-200 py-2 px-2'>
                   <option value="" disabled className='hidden'>Select State</option>
                   <option value="Uttar Pradesh">Uttar Pradesh</option>
-                  
+
                 </select>
-                <input type="text" required placeholder='Billing City' name='bill_city' value={billData.bill_city} onChange={handleChange}   className='w-full border border-black py-2 px-2' />
+                <input type="text" required placeholder='Billing City' name='bill_city' value={billData.bill_city} onChange={handleChange} className='w-full border border-black py-2 px-2' />
               </div>
               <div className='flex gap-4'>
-                <input type="text" required name='bill_area' value={billData.bill_area} onChange={handleChange}   placeholder='Billing Area' className='w-full border border-black py-2 px-2' />
+                <input type="text" required name='bill_area' value={billData.bill_area} onChange={handleChange} placeholder='Billing Area' className='w-full border border-black py-2 px-2' />
                 <input type="text" required placeholder='Billing City' className='w-full border border-black py-2 px-2' />
               </div>
               <div className='flex flex-col gap-1'>
@@ -133,11 +188,11 @@ function Checkout() {
 
               </div>
               {cartItem.map((item) => (
-                <div className='w-full flex justify-between px-2 py-2 bg-gray-100' key={item.id}>
+                <div className='w-full flex justify-between px-2 py-2 bg-gray-100' key={item._id}>
                   <div className='w-1/2 flex gap-6'>
                     <div>
                       <Image
-                        src={item.image||item.src}
+                        src={item.productId.bookCover}
                         alt={item.title}
                         height={60}
                         width={60}
@@ -185,13 +240,25 @@ function Checkout() {
                 </div>
 
               </div>
-              {(billData.name&&billData.email&&billData.address&&billData.phone&&billData.bill_area&&billData.bill_city)?(<Link href="/placeorder" onClick={handleClick} className='flex justify-center items-center py-2 bg-black text-white'>
+              <div
+                onClick={() => {
+                  if (
+                    billData.name &&
+                    billData.email &&
+                    billData.address &&
+                    billData.phone &&
+                    billData.bill_area &&
+                    billData.bill_city
+                  ) {
+                    handlePayment(); // 🔥 CALL PAYMENT
+                  } else {
+                    alert("You Need To fill the required detail");
+                  }
+                }}
+                className="flex justify-center items-center py-2 bg-black text-white cursor-pointer"
+              >
                 PLACE ORDER
-              </Link>):(<div onClick={()=>{
-                alert("You Need To fill the required detail");
-              }} className='flex justify-center items-center py-2 bg-black text-white'>
-                PLACE ORDER
-              </div>)}
+              </div>
             </div>
 
 

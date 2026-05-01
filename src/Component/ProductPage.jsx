@@ -6,23 +6,53 @@ import BookData from "@/data/BookData"
 import { Star } from "lucide-react"
 import Link from "next/link"
 import { Context } from "@/Context/ProductContext"
+import api from "@/app/api/axios"
 
 export default function ProductPage() {
   const params = useParams()
+  const id = params.id;
+  console.log("ID from URL:", id);
   const [book, setBook] = useState(null)
+  const [Books,setBooks] = useState([]);
   const [info,setInfo] = useState([]);
-const {addToCart,cartItem}=useContext(Context)
-  useEffect(() => {
-    const data = BookData.find(
-      (item) => item.id === Number(params.id)
-    )
-    setBook(data) 
-  }, [params.id])
+const {addToCart,cartItem,isUserPresent}=useContext(Context)
+  // useEffect(() => {
+  //   const data = BookData.find(
+  //     (item) => item.id === Number(params.id)
+  //   )
+  //   setBook(data) 
+  // }, [params.id])
 
-   useEffect(()=>{
-    const stored = JSON.parse(localStorage.getItem("FormInfo"))||[];
-    setInfo(stored);
-  },[]);
+  //  useEffect(()=>{
+  //   const stored = JSON.parse(localStorage.getItem("FormInfo"))||[];
+  //   setInfo(stored);
+  // },[]);
+
+  const fetchBookById = async ()=>{
+    try {
+      const res = await api.get(`/api/getBooksById/${id}`)
+      console.log("The data is fetch by id id",res.data)
+      setBook(res.data)
+    } catch (error) {
+      console.error("Error fetching book:", error)
+    }
+  }
+
+  const fetchBooks = async()=>{
+    try {
+      const res = await api.get("/api/getBooks");
+      console.log("The data is",res.data)
+      setBooks(res.data)
+
+    } catch (error) {
+      console.error("Error fetching books:", error)
+    }
+  }
+
+  useEffect(() => {
+    fetchBookById();
+    fetchBooks();
+  }, [id]);
 
   if (!book) {
     return <p className="text-center mt-10 h-screen flex items-center justify-center  text-2xl">Loading...</p>
@@ -43,7 +73,7 @@ const {addToCart,cartItem}=useContext(Context)
         <div className="flex justify-center">
           <div className="relative w-65 aspect-3/4 bg-slate-50 rounded-xl p-4 shadow">
             <Image
-              src={book.image}
+              src={book.bookCover}
               alt={book.title}
               fill
             loading="eager"
@@ -98,7 +128,7 @@ const {addToCart,cartItem}=useContext(Context)
 
            
 
-            {info.length>0?( 
+            {isUserPresent?( 
                <Link
               href={book.pdf}
               target="_blank"
@@ -110,13 +140,13 @@ const {addToCart,cartItem}=useContext(Context)
               href="/signup"
               className="px-6 py-3 bg-black text-white rounded-md text-center"
               onClick={()=>{
-                {alert("You Need to SignUp For Read This Pdf")}
+                {alert("You Need to Signin For Read This Pdf")}
               }}
             >
               Read Pdf
             </Link>)}
 
-           {info.length>0?( 
+           {isUserPresent?( 
               <a
               href={book.pdf}
               target="_blank"
@@ -129,21 +159,14 @@ const {addToCart,cartItem}=useContext(Context)
               href="/signup"
               className="px-6 py-3 border border-black rounded-md text-center"
                onClick={()=>{
-                {alert("You Need to SignUp For Download This Pdf")}
+                {alert("You Need to Signin For Download This Pdf")}
               }}
             >
               Download
             </Link>)}
 
             
-           {idCheck(book)?( 
-            <button
-
-              className="px-6 py-3 border border-black rounded-md font-medium
-               hover:bg-black hover:text-white transition"
-            >
-              Add to Cart
-            </button>):( 
+           {isUserPresent?( 
             <button
 
               className="px-6 py-3 border border-black rounded-md font-medium
@@ -151,6 +174,13 @@ const {addToCart,cartItem}=useContext(Context)
                onClick={()=>{
                 addToCart(book)
                }}
+            >
+              Add to Cart
+            </button>):( 
+            <button
+              className="px-6 py-3 border border-black rounded-md font-medium
+               hover:bg-black hover:text-white transition"
+              onClick={()=>alert("You Need to Signin")}
             >
               Add to Cart
             </button>)}
@@ -165,16 +195,16 @@ const {addToCart,cartItem}=useContext(Context)
         </h2>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {BookData.filter(item => item.id !== book.id).slice(0,4).map(item => (
+          {Books.filter(item => item._id !== book._id).slice(0,4).map(item => (
             <Link
-              key={item.id}
-              href={`/productInfo/${item.id}`}
+              key={item._id}
+              href={`/productInfo/${item._id}`}
               className="group"
             >
               <div className="bg-slate-50 p-3 rounded-lg shadow-sm group-hover:shadow-md transition">
                 <div className="relative aspect-3/4">
                   <Image
-                    src={item.image}
+                    src={item.bookCover}
                     alt={item.title}
                     fill
                      sizes="(max-width: 768px) 100vw, 25vw"

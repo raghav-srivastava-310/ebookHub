@@ -5,13 +5,15 @@ import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 
 function Cart() {
-  const { cartItem, removeCart, addToCart, TotalPrice } =
+  const { cartItem, removeCart, addToCart, TotalPrice, isUserPresent,updateCartQuantity } =
     useContext(Context);
 
   const [info, setInfo] = useState([]);
 
+
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("FormInfo")) || [];
+    console.log("the data is", cartItem);
     setInfo(data);
   }, []);
  
@@ -52,13 +54,13 @@ function Cart() {
 
             {cartItem.map((item) => (
               <div
-                key={item.id}
+                key={item._id}
                 className="flex flex-col md:flex-row justify-between mb-10 gap-6 md:gap-0"
               >
                 {/* Left Section */}
                 <div className="w-full md:w-1/2 flex gap-4 items-center">
                   <Image
-                    src={item.src||item.image}
+                    src={item.productId.bookCover}
                     alt={item.title}
                     height={80}
                     width={80}
@@ -80,20 +82,27 @@ function Cart() {
                     <div className="flex flex-col justify-center">
                       <div className="w-28 h-10 border flex justify-around items-center border-gray-800 rounded-md">
                         <button
-                          onClick={() => removeCart(item)}
+                          onClick={() => {
+                            if (item.quantity > 1) {
+                              updateCartQuantity(item.productId._id, item.quantity - 1);
+                            }
+                          }}
                           className="text-2xl hover:cursor-pointer"
                         >
                           -
                         </button>
-                        <span>1</span>
-                        <button className="text-2xl hover:cursor-pointer">
+                        <span>{item.quantity || 1}</span>
+                        <button 
+                          onClick={() => updateCartQuantity(item.productId._id, item.quantity + 1)}
+                          className="text-2xl hover:cursor-pointer"
+                        >
                           +
                         </button>
                       </div>
 
                       <div
                         className="text-red-600 text-center hover:cursor-pointer text-sm mt-1"
-                        onClick={() => removeCart(item)}
+                        onClick={() => removeCart(item.productId._id)}
                       >
                         Remove Item
                       </div>
@@ -152,7 +161,7 @@ function Cart() {
               </p>
 
               <div className="mt-4">
-                {info.length > 0 ? (
+                {isUserPresent ? (
                   <Link
                     href="/checkout"
                     className="flex justify-center items-center px-10 py-4 rounded-md bg-black text-white"
@@ -161,9 +170,9 @@ function Cart() {
                   </Link>
                 ) : (
                   <Link
-                    href="/signup"
+                    href="/signin"
                     onClick={() =>
-                      alert("You Need to SignUp For CheckOut")
+                      alert("You Need to Signin For CheckOut")
                     }
                     className="flex justify-center items-center px-10 py-4 rounded-md bg-black text-white"
                   >

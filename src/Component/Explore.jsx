@@ -10,10 +10,10 @@ function Explore() {
   const router = useRouter();
   const [books,setBooks]= useState([]);
 
-  const { addToCart, cartItem, isInWhishlist, removeWhislistItem, addToWhislisht } = useContext(Context);
-  const idCheck = (book) => {
-    return cartItem.some((item) => item._id === book._id);
-  } 
+  const { addToCart, cartItem, isInWhishlist, removeWhislistItem, addToWhislisht,isUserPresent } = useContext(Context);
+  // const idCheck = (book) => {
+  //   return cartItem.some((item) => item._id === book._id);
+  // } 
   const getBooks = async ()=>{
     try {
       const res = await api.get('/api/getBooks');
@@ -57,12 +57,15 @@ function Explore() {
               </div>
             </div>
             <div className='w-full px-4 py-2'>
-              {idCheck(item) ? (<button onClick={() => {
-                alert("Item Already in the Cart")
+              {isUserPresent ?
+               (<button onClick={() => {
+                addToCart(item);
               }} className='px-2 cursor-pointer rounded-md py-4 w-full flex justify-center items-center bg-black text-white'>
                 Add To Cart
-              </button>) : (<button onClick={() => {
-                addToCart(item);
+              </button>) :
+                (<button onClick={() => {
+                alert("Please login to add items to cart");
+               
               }} className='px-2 cursor-pointer rounded-md py-4 w-full flex justify-center items-center bg-black text-white'>
                 Add To Cart
               </button>)}
