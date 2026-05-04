@@ -18,7 +18,7 @@ const pathname = usePathname();
     const res = await api.get("/api/auth/get-me")
     const data =  res.data;
     setUser(data.userDetail)
-      console.log("the data is",data)
+ 
    } catch (error) {
     console.log("Error while fetch user",error.message)
    }
@@ -26,7 +26,7 @@ const pathname = usePathname();
   }
   useEffect(()=>{
    const userToken =  localStorage.getItem("accessToken");
-   console.log(pathname)
+
    if(userToken){
     setIsUserPresent(true);
      fetchUser();

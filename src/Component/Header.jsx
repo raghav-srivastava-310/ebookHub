@@ -38,7 +38,6 @@ const closeMenu = () => {
 
   const handleLogout =()=>{
     localStorage.removeItem("accessToken");
-    setIsUserPresent(false);
     setOpenProfile(false);
     router.push("/signin")
   }
@@ -174,7 +173,7 @@ const closeMenu = () => {
             </a>
           </nav>
            <div className="  pl-2 pr-24" onClick={closeMenu}>
-            {isUserPresent > 0 ? (<button  className="flex items-center gap-2 bg-white text-indigo-700 px-4 py-1.5 rounded-full font-medium hover:bg-yellow-300 transition">
+            {isUserPresent > 0 ? (<button onClick={handleLogout} className="flex items-center gap-2 bg-white text-indigo-700 px-4 py-1.5 rounded-full font-medium hover:bg-yellow-300 transition">
               <User className="w-4 h-4" />
               Sign Out
             </button >) : (
