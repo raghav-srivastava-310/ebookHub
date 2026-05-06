@@ -9,16 +9,15 @@ function Card({ id, src, title, price, max_price }) {
   const router = useRouter();
 
   return (
-    <>
-      <div className='w-75 md:w-100 relative'>
-        <div className='absolute right-0 w-8 h-8 m-2  rounded-full  flex items-center bg-white justify-center '>
+      <div className='w-48 md:w-56 flex-shrink-0 group flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden relative'>
+        <div className='absolute z-10 top-2 right-2 w-8 h-8 rounded-full flex items-center bg-white/80 backdrop-blur-sm justify-center shadow-sm cursor-pointer hover:bg-white transition-colors duration-200'>
 
-          <Heart size={20} className={` ${isInWhishlist(id) ? "fill-red-700 text-red-700 pointer" : ""} `} onClick={(e) => {
+          <Heart size={16} className={`transition-colors duration-200 ${isInWhishlist(id) ? "fill-red-500 text-red-500" : "text-gray-500 hover:text-red-500"}`} onClick={(e) => {
             e.stopPropagation();
             isInWhishlist(id) ? removeWhislistItem(id) : addToWhislisht({ id, src, title, price });
           }} />
         </div>
-        <div className='cursor-pointer' onClick={() => {
+        <div className='cursor-pointer overflow-hidden bg-gray-50' onClick={() => {
           router.push(`/productInfo/${id}`)
         }}>
           <Image
@@ -26,23 +25,21 @@ function Card({ id, src, title, price, max_price }) {
             height={400}
             width={400}
 
-            className='aspect-4/5  transition-transform duration-300 group-hover:scale-105'
-            alt='Image'
+            className='aspect-4/5 object-cover w-full transition-transform duration-500 group-hover:scale-110'
+            alt={title}
           />
         </div>
 
-      </div>
-      <div className='py-2 text-sm  text-[#423f3f] flex flex-col gap-1' onClick={() => {
-        router.push(`/productInfo/${id}`)
-      }} >
-        <p className='text-center md:text-left'>{title}</p>
-        <div className='flex relative gap-2 justify-center md:justify-start items-center'>
-          <span className=''> ₹{price} </span>
-          <span className='line-through  text-gray-400 '>₹{max_price}</span>
+        <div className='p-4 text-sm flex flex-col gap-1.5 cursor-pointer flex-grow justify-between' onClick={() => {
+          router.push(`/productInfo/${id}`)
+        }} >
+          <p className='font-semibold text-gray-800 line-clamp-2 leading-snug'>{title}</p>
+          <div className='flex items-center gap-2 mt-auto'>
+            <span className='font-bold text-indigo-600 text-base'>₹{price}</span>
+            {max_price && <span className='line-through text-xs text-gray-400 font-medium'>₹{max_price}</span>}
+          </div>
         </div>
-
       </div>
-    </>
   )
 }
 

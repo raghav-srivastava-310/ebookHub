@@ -3,6 +3,7 @@ import { Context } from "@/Context/ProductContext";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 function Cart() {
   const { cartItem, removeCart, addToCart, TotalPrice, isUserPresent,updateCartQuantity } =
@@ -140,7 +141,7 @@ function Cart() {
                   />
                   <button
                     className="px-6 md:px-10 py-3 bg-black text-white"
-                    onClick={() => alert("Oops! Coupon Not Available")}
+                    onClick={() => toast.error("Oops! Coupon Not Available")}
                   >
                     Apply
                   </button>
@@ -172,7 +173,7 @@ function Cart() {
                   <Link
                     href="/signin"
                     onClick={() =>
-                      alert("You Need to Signin For CheckOut")
+                      toast.warning("You Need to Signin For CheckOut")
                     }
                     className="flex justify-center items-center px-10 py-4 rounded-md bg-black text-white"
                   >

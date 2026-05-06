@@ -36,27 +36,32 @@ export default function Hero() {
                 src={src}
                 alt="Ebook Hero"
                 fill
+                loading="eager"
                  sizes="(max-width: 768px) 100vw, 25vw"
                 className=""
               />
-              {/* Black Overlay */}
-              <div className="absolute inset-0 bg-black/60"></div>
-              <div className="absolute z-10 max-w-2xl md:max-w-4xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
-                <h1 className="text-2xl md:text-6xl font-bold leading-tight">
-                  Discover Your Next <span className="text-yellow-400">Favorite Book</span>
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent"></div>
+              <div className="absolute inset-0 bg-indigo-900/10 mix-blend-multiply"></div>
+              <div className="absolute z-10 max-w-2xl md:max-w-4xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white w-full px-4">
+                <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold tracking-widest uppercase shadow-xl">
+                  Welcome to Ebook Hub
+                </div>
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight drop-shadow-lg">
+                  Discover Your Next <br className="hidden md:block" />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">Favorite Book</span>
                 </h1>
 
-                <p className="mt-5 text-lg md:text-xl text-gray-200">
+                <p className="mt-6 text-lg md:text-xl text-gray-200 font-light max-w-2xl mx-auto drop-shadow-md">
                   Read academic, competitive, and fiction books anytime, anywhere.
                   Your digital library starts here.
                 </p>
 
-                <div className="mt-8 flex justify-center gap-4 flex-wrap">
-                  <Link href="/explore" className="bg-yellow-400 text-black px-6 py-3 rounded-full font-semibold hover:bg-yellow-300 transition">
+                <div className="mt-10 flex justify-center gap-4 flex-wrap">
+                  <Link href="/explore" className="bg-indigo-600 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-indigo-700 hover:scale-105 shadow-[0_0_20px_rgba(79,70,229,0.4)] transition-all duration-300">
                     Explore Books
                   </Link>
 
-                  <a href="#toprecommended"  className="border border-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-black transition">
+                  <a href="#toprecommended"  className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-white hover:text-gray-900 transition-all duration-300">
                     Top Recommended
                   </a >
                 </div>

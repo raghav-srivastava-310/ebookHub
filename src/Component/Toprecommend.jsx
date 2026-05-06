@@ -1,26 +1,43 @@
 "use client"
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState,useEffect } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
 
 
 import Card from './Card';
-import BookData from '@/data/BookData';
+import api from '@/app/api/axios';
+
 
 function Toprecommend() {
   const [open,setopen]=useState(false);
+  const [books, setBooks] = useState([]);
+    const getBooks = async ()=>{
+        try {
+          const res = await api.get("/api/getBooks?category=TopRecommended")
+        
+          setBooks(res.data);
+        } catch (error) {
+          console.error("Error fetching books:", error);
+        }
+      }
+      useEffect(()=>{
+        getBooks();
+      },[])
   return (
     <>
-      <div className='bg-[#f4f4f4]'>
-        <div className='px-5  py-12 md:px-16 scroll-mt-14' id='toprecommended'>
-          <div className='flex justify-between items-center mb-6'>
-            <h2 className='font-medium text-2xl tracking-widest'>Top Recommended</h2>
-            <Link href="#" className='text-xl' onClick={()=>setopen(!open)}>{open?"view less":"view all"}</Link>
+      <div className='bg-white'>
+        <div className='max-w-7xl mx-auto px-5 py-16 md:px-8 scroll-mt-20' id='toprecommended'>
+          <div className='flex justify-between items-end mb-8 border-b border-gray-100 pb-4'>
+            <div>
+              <h2 className='font-extrabold text-3xl md:text-4xl text-gray-900 tracking-tight'>Top Recommended</h2>
+              <p className='text-gray-500 mt-2 text-sm font-medium'>Handpicked selections just for you</p>
+            </div>
+            <Link href="#" className='text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors bg-indigo-50 px-4 py-2 rounded-full' onClick={(e)=>{e.preventDefault(); setopen(!open);}}>{open?"View Less":"View All"}</Link>
           </div>
-          <div className={` flex gap-2 w-full ${open?"flex-wrap":"overflow-x-auto"} scrollbar-hide justify-start scrollbar-custom`}>
-            {BookData.slice(0,5).map((item) => (
-              <div key={item.id} >
-                <Card id={item.id} src={item.image} title={item.title} price={item.price} review={item.rating} max_price={item.Max_Price} />
+          <div className={`flex gap-6 w-full ${open?"flex-wrap":"overflow-x-auto"} scrollbar-hide justify-start py-4 px-2 -mx-2`}>
+            {books.map((item) => (
+              <div key={item._id} >
+              <Card id={item._id} src={item.bookCover} title={item.title} price={item.price} review={item.rating} max_price={item.Max_Price} />
               </div>
             ))}
           </div>

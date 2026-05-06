@@ -7,6 +7,7 @@ import { Star } from "lucide-react"
 import Link from "next/link"
 import { Context } from "@/Context/ProductContext"
 import api from "@/app/api/axios"
+import { toast } from "sonner"
 
 export default function ProductPage() {
   const params = useParams()
@@ -140,7 +141,7 @@ const {addToCart,cartItem,isUserPresent}=useContext(Context)
               href="/signup"
               className="px-6 py-3 bg-black text-white rounded-md text-center"
               onClick={()=>{
-                {alert("You Need to Signin For Read This Pdf")}
+                toast.warning("You Need to Signin For Read This Pdf")
               }}
             >
               Read Pdf
@@ -159,7 +160,7 @@ const {addToCart,cartItem,isUserPresent}=useContext(Context)
               href="/signup"
               className="px-6 py-3 border border-black rounded-md text-center"
                onClick={()=>{
-                {alert("You Need to Signin For Download This Pdf")}
+                toast.warning("You Need to Signin For Download This Pdf")
               }}
             >
               Download
@@ -180,7 +181,7 @@ const {addToCart,cartItem,isUserPresent}=useContext(Context)
             <button
               className="px-6 py-3 border border-black rounded-md font-medium
                hover:bg-black hover:text-white transition"
-              onClick={()=>alert("You Need to Signin")}
+              onClick={()=>toast.warning("You Need to Signin")}
             >
               Add to Cart
             </button>)}

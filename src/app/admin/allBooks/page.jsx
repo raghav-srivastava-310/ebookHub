@@ -1,13 +1,42 @@
 "use client"
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { Search, Plus, MoreHorizontal, Edit, Trash2, Eye, LibraryBig } from "lucide-react"
 import Link from "next/link"
 import api from "@/app/api/axios"
+import { toast } from "sonner"
+import { Context } from "@/Context/ProductContext"
 
 export default function AllBooks() {
   const [books, setBooks] = useState([])
   const [loading, setLoading] = useState(true)
+   const [isAdmin, setIsAdmin] = useState(null);
+    
+   
+       const fetchAdminDetails = async () => {
+           try {
+               const res = await api.get("/api/admin/get-admin");
+   
+               if (res.data.success) {
+                   setIsAdmin(true);
+               }
+   
+           } catch (error) {
+               console.log("Error fetching admin details", error.message);
+               setIsAdmin(false);
+           }
+       };
+   
+       useEffect(() => {
+           fetchAdminDetails();
+       }, []);
+   
+       useEffect(() => {
+           if (isAdmin === false) {
+               redirect("/admin/signin");
+           }
+       }, [isAdmin]);
+   
 
   const getBooks = async () => {
     try {
@@ -30,13 +59,21 @@ export default function AllBooks() {
       // Remove the deleted book from the state
       setBooks(books.filter(book => book._id !== id))
       if(res.data.success){
-        alert("Book deleted successfully")
+        toast.success("Book deleted successfully")
       }
     } catch (error) {
       console.log(error.message)
     }
   }
-
+  if (isAdmin === null) {
+           return <div>Loading...</div>
+       }
+  if(!isAdmin)
+  {
+    toast.error("Access denied. Admin privileges required.");
+     redirect("/admin/signin");
+  // or a loading spinner, or a message saying "Checking admin status..."
+  }
   return (
     <div className="w-full mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
       {/* Header */}

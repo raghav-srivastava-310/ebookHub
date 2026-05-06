@@ -59,7 +59,7 @@
   text-align: center;
 }
 .scrollbar-custom::-webkit-scrollbar-thumb {
-  background-color: #888;
+  background-color: #cbd5e1;
   border-radius: 10px;
 }
 .scrollbar-custom::-webkit-scrollbar-track {

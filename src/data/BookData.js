@@ -194,7 +194,7 @@ const BookData = [
   {
     id: 17,
     title: "The Day of the Jackal",
-    category: "Thriller",
+    category: "Thriller",  
     price: 219,
     Max_Price: 400,
     image: "/image/The Day of the Jackal.jpg",

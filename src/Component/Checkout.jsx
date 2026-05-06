@@ -6,6 +6,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import api from '@/app/api/axios';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 const initialValue = {
   name: "",
   email: "",
@@ -39,7 +40,7 @@ function Checkout() {
   const handlePayment = async () => {
     const res = await loadScript();
     if (!res) {
-      alert("Razorpay SDK failed to load. Are you online?");
+      toast.error("Razorpay SDK failed to load. Are you online?");
       return;
     }
 
@@ -60,12 +61,12 @@ function Checkout() {
           const verifyRes = await api.post("/api/payment/verifyPayment", response);
           const verifyData = verifyRes.data;
           if (verifyData.success) {
-            alert("Payment successful! Your order has been placed.");
+            toast.success("Payment successful! Your order has been placed.");
             setCartItem([]);
             localStorage.setItem("ProductInfo", JSON.stringify([]));
             router.push("/");
           } else {
-            alert("Payment verification failed. Please contact support.");
+            toast.error("Payment verification failed. Please contact support.");
           }
         },
         theme: {
@@ -77,7 +78,7 @@ function Checkout() {
     }
     catch (error) {
       console.log("Payment failed:", error);
-      alert("Payment failed. Please try again.");
+      toast.error("Payment failed. Please try again.");
     }
   };
 
@@ -252,7 +253,7 @@ function Checkout() {
                   ) {
                     handlePayment(); // 🔥 CALL PAYMENT
                   } else {
-                    alert("You Need To fill the required detail");
+                    toast.warning("You Need To fill the required detail");
                   }
                 }}
                 className="flex justify-center items-center py-2 bg-black text-white cursor-pointer"

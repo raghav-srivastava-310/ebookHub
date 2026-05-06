@@ -33,7 +33,6 @@ export default function AdminSignIn() {
       const data = res.data;
 
       if (data.success) {
-        localStorage.setItem("adminToken", data.token);
         router.push("/admin");
       } else {
         setError(data.message || "Invalid credentials. Please try again.");

@@ -1,8 +1,11 @@
 "use client"
-import React, { useState } from "react"
+import React, { useContext, useState,useEffect } from "react"
 
 import { BookPlus, IndianRupee, FileText, Type, UploadCloud, Loader2, CheckCircle2,Star,Tag } from "lucide-react"
 import api from "@/app/api/axios"
+import { toast } from "sonner"
+import { Context } from "@/Context/ProductContext"
+import { redirect } from "next/navigation"
 
 export default function AddBook() {
   const [form, setForm] = useState({
@@ -19,6 +22,35 @@ export default function AddBook() {
   
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+   
+       const [isAdmin, setIsAdmin] = useState(null);
+    
+   
+       const fetchAdminDetails = async () => {
+           try {
+               const res = await api.get("/api/admin/get-admin");
+   
+               if (res.data.success) {
+                   setIsAdmin(true);
+               }
+   
+           } catch (error) {
+               console.log("Error fetching admin details", error.message);
+               setIsAdmin(false);
+           }
+       };
+   
+       useEffect(() => {
+           fetchAdminDetails();
+       }, []);
+   
+       useEffect(() => {
+           if (isAdmin === false) {
+               redirect("/admin/signin");
+           }
+       }, [isAdmin]);
+   
+       
 
   const handleChange = (e) => {
     const {name,value,files} = e.target;
@@ -49,14 +81,22 @@ export default function AddBook() {
         setForm({ title: "", description: "", price: "", maxPrice:"",rating:"",category:"", pdf: null,image:null });
         setTimeout(() => setSuccess(false), 3000);
       } else {
-        alert("Error occurred")
+        toast.error("Error occurred")
       }
     } catch (error) {
       console.error(error)
-      alert("Server error")
+      toast.error("Server error")
     } finally {
       setLoading(false);
     }
+  }
+  if (isAdmin === null) {
+           return <div>Loading...</div>
+       }
+  if(!isAdmin){
+    toast.error("Access denied. Admin privileges required.");
+     redirect("/admin/signin");
+   // or a loading spinner, or a message saying "Checking admin status..."
   }
 
   return (
@@ -136,7 +176,7 @@ export default function AddBook() {
             <div className="space-y-2">
               <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
                 <Star className="w-4 h-4 text-slate-400" />
-                rating (₹)
+                rating
               </label>
               <input
                 type="number"

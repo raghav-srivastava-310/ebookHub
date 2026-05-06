@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Context } from '@/Context/ProductContext'
 import { Heart } from 'lucide-react'
 import api from '@/app/api/axios'
+import { toast } from 'sonner'
 function Explore() {
   const router = useRouter();
   const [books,setBooks]= useState([]);
@@ -64,7 +65,7 @@ function Explore() {
                 Add To Cart
               </button>) :
                 (<button onClick={() => {
-                alert("Please login to add items to cart");
+                toast.warning("Please login to add items to cart");
                
               }} className='px-2 cursor-pointer rounded-md py-4 w-full flex justify-center items-center bg-black text-white'>
                 Add To Cart

@@ -2,6 +2,7 @@
 import api from '@/app/api/axios';
 import { usePathname } from 'next/navigation';
 import React, { createContext, useState, useEffect, useReducer } from 'react'
+import { toast } from 'sonner';
 export const Context = createContext();
 
 function ProductContext({ children }) {
@@ -9,6 +10,8 @@ function ProductContext({ children }) {
   const [whishlist, setWhishList] = useState([]);
    const [user,setUser] = useState({});
      const [isUserPresent,setIsUserPresent] = useState(false)
+     const [isAdmin,setIsAdmin] = useState(false);
+
 const pathname = usePathname();
 
      // The Below Function is used to fetch the user details on first render and whenever the pathname changes
@@ -18,6 +21,9 @@ const pathname = usePathname();
     const res = await api.get("/api/auth/get-me")
     const data =  res.data;
     setUser(data.userDetail)
+    if(data.userDetail){
+      setIsUserPresent(true);
+    }
  
    } catch (error) {
     console.log("Error while fetch user",error.message)
@@ -25,13 +31,10 @@ const pathname = usePathname();
     
   }
   useEffect(()=>{
-   const userToken =  localStorage.getItem("accessToken");
-
-   if(userToken){
-    setIsUserPresent(true);
+   
      fetchUser();
-   }
-  
+   
+
   },[pathname])
 
   //The below useEffect is used to fill the wishlist
@@ -42,10 +45,10 @@ const pathname = usePathname();
   }, []);
 
   //The below useEffect is used to getData on first render for add to Cart
-  useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("ProductInfo")) || [];
-    setCartItem(storedData);
-  }, []);
+  // useEffect(() => {
+  //   const storedData = JSON.parse(localStorage.getItem("ProductInfo")) || [];
+  //   setCartItem(storedData);
+  // }, []);
   //Whishlist functionality 
 
   const addToWhislisht = (item) => {
@@ -81,7 +84,7 @@ const pathname = usePathname();
         // console.log(cartItem)
         // localStorage.setItem("ProductInfo", JSON.stringify(data.cart.products));
        
-        alert("Item added to cart successfully!");
+        toast.success("Item added to cart successfully!");
          await fetchCartItems();
       }
     } catch (error) {
@@ -95,7 +98,7 @@ const pathname = usePathname();
     try {
       const res = await api.get("/api/cart/getCart");
       const data = res.data;
-      // console.log("Cart items fetched:", data);
+      console.log("Cart items fetched:", data);
       if(data.cart&&data.cart.products){
         setCartItem(data.cart.products);
         
@@ -110,11 +113,11 @@ const pathname = usePathname();
   }
   useEffect(() => {
   
-   if(isUserPresent){
+   if(isUserPresent&&cartItem.length!==0){
     fetchCartItems();
    }
   
-}, [isUserPresent]);
+}, [isUserPresent,cartItem.length]);
 
   const removeCart = async (id) => {
     // const storeItem = JSON.parse(localStorage.getItem("ProductInfo"));
@@ -153,7 +156,7 @@ const pathname = usePathname();
     }, 0);
   }
   return (
-    <Context.Provider value={{  addToCart, cartItem,setCartItem, isInCart, removeCart, TotalPrice, addToWhislisht, isInWhishlist, whishlist, removeWhislistItem,user,isUserPresent, updateCartQuantity }}>
+    <Context.Provider value={{  addToCart, cartItem,setCartItem, isInCart, removeCart, TotalPrice, addToWhislisht, isInWhishlist, whishlist, removeWhislistItem,user,isUserPresent, updateCartQuantity, }}>
       {children}
     </Context.Provider>
   )
