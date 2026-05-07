@@ -64,9 +64,9 @@ function AdminSidebar() {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <Link href="#">
+                <Link href="/admin/allUser">
                   <Settings className="mr-2 h-4 w-4" />
-                  Orders
+                  Users
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

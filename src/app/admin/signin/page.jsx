@@ -76,8 +76,7 @@ export default function AdminSignIn() {
 
         <div className="relative z-10 flex flex-col gap-6 mt-12 border-t border-white/10 pt-8">
           <div className="flex items-center gap-4 text-indigo-200/60 text-sm font-medium">
-            <ShieldCheck className="w-6 h-6 text-emerald-400/80" />
-            <span>Secure AES-256 Encrypted Gateway</span>
+       
           </div>
         </div>
       </div>
