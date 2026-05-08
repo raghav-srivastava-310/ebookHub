@@ -2,13 +2,13 @@
 import { Context } from "@/Context/ProductContext";
 import Image from "next/image";
 import React, { useContext, useState } from "react";
-
+import { toast } from "sonner";
 function WishList() {
-  const { whishlist, removeWhislistItem, addToCart, cartItem } =
+  const { whishlist, removeWhislistItem, addToCart, cartItem,isUserPresent } =
     useContext(Context);
     const [remove,setRemove]=useState(false);
   const idCheck = (book) => {
-    return cartItem.some((item) => item.id === book.id);
+    return cartItem.some((item) => item._id === book.id);
   }
   return (
     <>
@@ -46,7 +46,7 @@ function WishList() {
           <div className="p-2 md:p-4 text-[#5E5C5C]">
 
             {whishlist.map((item) => (
-              <div key={item.id} className="mb-10">
+              <div key={item._id} className="mb-10">
 
 
                 <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-0">
@@ -54,7 +54,7 @@ function WishList() {
 
                   <div className="w-full md:w-1/2 flex gap-4 items-center">
                     <Image
-                      src={item.src||item.image}
+                      src={item.src||item.image||item.bookCover}
                       alt={item.title}
                       height={80}
                       width={80}
@@ -79,7 +79,7 @@ function WishList() {
                       <div className="w-28 h-10 flex justify-between items-center px-4 border border-gray-800 rounded-md">
                         <button
                           onClick={() =>
-                            removeWhislistItem(item.id)
+                            removeWhislistItem(item._id)
                           }
                           className="text-2xl cursor-pointer"
                         >
@@ -104,7 +104,7 @@ function WishList() {
                     onClick={()=>{
                       
                       const result = confirm("Item is already in bag You Want to remove item");
-                      {result&&(removeWhislistItem(item.id))}
+                      {result&&(removeWhislistItem(item._id))}
                     }}
                   >
                     Move To Bag
@@ -112,8 +112,12 @@ function WishList() {
                   <button
                     className="flex justify-center rounded-md px-8 py-2 bg-black hover:cursor-pointer text-white"
                     onClick={() => {
-                      addToCart(item);
-                      removeWhislistItem(item.id);
+                   if(isUserPresent){
+                       addToCart(item);
+                      removeWhislistItem(item._id);
+                   }else{
+                    toast.warning("Please login to add items to cart");
+                   }
                     }}
                   >
                     Move To Bag

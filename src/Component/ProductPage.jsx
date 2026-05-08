@@ -129,7 +129,7 @@ const {addToCart,cartItem,isUserPresent}=useContext(Context)
 
            
 
-            {isUserPresent?( 
+            {/* {isUserPresent?( 
                <Link
               href={book.pdf}
               target="_blank"
@@ -164,13 +164,13 @@ const {addToCart,cartItem,isUserPresent}=useContext(Context)
               }}
             >
               Download
-            </Link>)}
+            </Link>)} */}
 
             
            {isUserPresent?( 
             <button
 
-              className="px-6 py-3 border border-black rounded-md font-medium
+              className="px-10 py-3 border border-black rounded-md font-medium
                hover:bg-black hover:text-white transition"
                onClick={()=>{
                 addToCart(book)
@@ -179,7 +179,7 @@ const {addToCart,cartItem,isUserPresent}=useContext(Context)
               Add to Cart
             </button>):( 
             <button
-              className="px-6 py-3 border border-black rounded-md font-medium
+              className="px-10 py-3 border border-black rounded-md font-medium
                hover:bg-black hover:text-white transition"
               onClick={()=>toast.warning("You Need to Signin")}
             >

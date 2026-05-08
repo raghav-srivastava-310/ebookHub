@@ -50,9 +50,9 @@ export default function AdminSignIn() {
       {/* Left Pane - Branding & Visuals */}
       <div className="hidden lg:flex w-1/2 relative bg-[#0f172a] overflow-hidden flex-col justify-between p-12">
         {/* Abstract Background Design */}
-        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600 rounded-full mix-blend-screen filter blur-[120px] opacity-40"></div>
-        <div className="absolute top-[20%] right-[-10%] w-[400px] h-[400px] bg-purple-600 rounded-full mix-blend-screen filter blur-[100px] opacity-40"></div>
-        <div className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-fuchsia-600 rounded-full mix-blend-screen filter blur-[130px] opacity-30"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-125 h-125 bg-indigo-600 rounded-full mix-blend-screen filter blur-[120px] opacity-40"></div>
+        <div className="absolute top-[20%] right-[-10%] w-100 h-100 bg-purple-600 rounded-full mix-blend-screen filter blur-[100px] opacity-40"></div>
+        <div className="absolute bottom-[-10%] left-[20%] w-150 h-150 bg-fuchsia-600 rounded-full mix-blend-screen filter blur-[130px] opacity-30"></div>
 
         <div className="relative z-10 flex items-center justify-between">
           <div className="flex items-center gap-3 text-white">
@@ -67,7 +67,7 @@ export default function AdminSignIn() {
         <div className="relative z-10 mt-12 mb-auto pt-24">
           <h1 className="text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-8">
             Empower your<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-purple-300 to-fuchsia-300">digital library.</span>
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-indigo-300 via-purple-300 to-fuchsia-300">digital library.</span>
           </h1>
           <p className="text-lg text-indigo-100/80 max-w-md font-medium leading-relaxed">
             Access the master dashboard to oversee inventory, analyze user activity, and control the entire ecosystem from a secured central command.

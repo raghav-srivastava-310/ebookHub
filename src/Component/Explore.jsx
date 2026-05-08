@@ -44,7 +44,7 @@ function Explore() {
                 className='w-full  aspect-square'
               />
             <div className='absolute right-0 top-0 w-8 h-8 m-2  rounded-full  flex items-center bg-white justify-center'>
-                <Heart size={20} className={` ${isInWhishlist(item._id) ? "fill-red-700 text-red-700 pointer" : ""} `} onClick={(e) => {
+                <Heart size={20} className={` ${isInWhishlist(item._id) ? "fill-red-700 text-red-700 cursor-pointer" : ""} `} onClick={(e) => {
                 e.stopPropagation();
                 isInWhishlist(item._id) ? removeWhislistItem(item._id) : addToWhislisht(item);
               }} />

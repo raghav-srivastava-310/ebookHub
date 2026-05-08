@@ -37,7 +37,7 @@ function Toprecommend() {
           <div className={`flex gap-6 w-full ${open?"flex-wrap":"overflow-x-auto"} scrollbar-hide justify-start py-4 px-2 -mx-2`}>
             {books.map((item) => (
               <div key={item._id} >
-              <Card id={item._id} src={item.bookCover} title={item.title} price={item.price} review={item.rating} max_price={item.Max_Price} />
+              <Card _id={item._id} src={item.bookCover} title={item.title} price={item.price} review={item.rating} max_price={item.Max_Price} />
               </div>
             ))}
           </div>

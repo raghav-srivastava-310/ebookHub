@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Heart } from 'lucide-react';
 import { Context } from '@/Context/ProductContext';
 import { useRouter } from 'next/navigation';
-function Card({ id, src, title, price, max_price }) {
+function Card({ _id, src, title, price, max_price }) {
   const { addToWhislisht, isInWhishlist, removeWhislistItem } = useContext(Context);
   const router = useRouter();
 
@@ -12,16 +12,16 @@ function Card({ id, src, title, price, max_price }) {
       <div className='w-48 md:w-56 flex-shrink-0 group flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden relative'>
         <div className='absolute z-10 top-2 right-2 w-8 h-8 rounded-full flex items-center bg-white/80 backdrop-blur-sm justify-center shadow-sm cursor-pointer hover:bg-white transition-colors duration-200'>
 
-          <Heart size={16} className={`transition-colors duration-200 ${isInWhishlist(id) ? "fill-red-500 text-red-500" : "text-gray-500 hover:text-red-500"}`} onClick={(e) => {
+          <Heart size={16} className={`transition-colors duration-200 ${isInWhishlist(_id) ? "fill-red-500  text-red-500" : ""}`} onClick={(e) => {
             e.stopPropagation();
-            isInWhishlist(id) ? removeWhislistItem(id) : addToWhislisht({ id, src, title, price });
+            isInWhishlist(_id) ? removeWhislistItem(_id) : addToWhislisht({_id, src, title, price });
           }} />
         </div>
         <div className='cursor-pointer overflow-hidden bg-gray-50' onClick={() => {
-          router.push(`/productInfo/${id}`)
+          router.push(`/productInfo/${_id}`)
         }}>
           <Image
-            src={src}
+            src={src} 
             height={400}
             width={400}
 
@@ -31,7 +31,7 @@ function Card({ id, src, title, price, max_price }) {
         </div>
 
         <div className='p-4 text-sm flex flex-col gap-1.5 cursor-pointer flex-grow justify-between' onClick={() => {
-          router.push(`/productInfo/${id}`)
+          router.push(`/productInfo/${_id}`)
         }} >
           <p className='font-semibold text-gray-800 line-clamp-2 leading-snug'>{title}</p>
           <div className='flex items-center gap-2 mt-auto'>

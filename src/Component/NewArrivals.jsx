@@ -34,7 +34,7 @@ function NewArrivals() {
           <div className={`flex gap-6 w-full ${open ? "flex-wrap" : "overflow-x-auto"} scrollbar-hide justify-start py-4 px-2 -mx-2`}>
             {books.map((item) => (
               <div key={item._id} >
-                <Card id={item._id} src={item.bookCover} title={item.title} price={item.price} review={item.review} max_price={item.max_price} />
+                <Card _id={item._id} src={item.bookCover} title={item.title} price={item.price} review={item.review} max_price={item.max_price} />
               </div>
             ))}
           </div>
