@@ -31,10 +31,8 @@ const pathname = usePathname();
     
   }
   useEffect(()=>{
-   
      fetchUser();
    
-
   },[pathname])
 
   //The below useEffect is used to fill the wishlist
@@ -44,11 +42,6 @@ const pathname = usePathname();
     setWhishList(whishlistData);
   }, []);
 
-  //The below useEffect is used to getData on first render for add to Cart
-  // useEffect(() => {
-  //   const storedData = JSON.parse(localStorage.getItem("ProductInfo")) || [];
-  //   setCartItem(storedData);
-  // }, []);
   //Whishlist functionality 
 
   const addToWhislisht = (item) => {
@@ -69,10 +62,7 @@ const pathname = usePathname();
 
   //Add to cart functionality
   const addToCart = async (item) => {
-    // const store = JSON.parse(localStorage.getItem("ProductInfo")) || [];
-    // store.push(item);
-    // localStorage.setItem("ProductInfo", JSON.stringify(store));
-    // setCartItem(store);
+
 
     try {
       const res = await api.post("/api/cart/addToCart",item);
@@ -80,9 +70,6 @@ const pathname = usePathname();
       const data = res.data;
 
       if(data.success){
-        // setCartItem(data.cart.products);
-        // console.log(cartItem)
-        // localStorage.setItem("ProductInfo", JSON.stringify(data.cart.products));
        
         toast.success("Item added to cart successfully!");
          await fetchCartItems();
@@ -102,7 +89,6 @@ const pathname = usePathname();
       if(data.cart&&data.cart.products){
         setCartItem(data.cart.products);
         
-        localStorage.setItem("ProductInfo", JSON.stringify(data.cart.products));
       }else{
         setCartItem([]);
         localStorage.setItem("ProductInfo", JSON.stringify([]));
@@ -112,12 +98,8 @@ const pathname = usePathname();
     }
   }
   useEffect(() => {
-  
-   if(isUserPresent&&cartItem.length!==0){
     fetchCartItems();
-   }
-  
-}, [isUserPresent,cartItem.length]);
+}, [user,isUserPresent]);
 
   const removeCart = async (id) => {
     // const storeItem = JSON.parse(localStorage.getItem("ProductInfo"));

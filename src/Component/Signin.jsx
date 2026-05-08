@@ -25,7 +25,7 @@ function Signin() {
         email:"",
         password:""
        })
-      //  localStorage.setItem("accessToken",JSON.stringify(data.accessToken))
+     
          router.push("/");
       }
 
