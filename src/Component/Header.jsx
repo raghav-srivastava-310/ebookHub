@@ -212,7 +212,10 @@ const closeMenu = () => {
              </div>
  
                <div className="mt-8">
-                 <button onClick={handleLogout} className="w-full bg-red-50 text-red-600 hover:bg-red-100 cursor-pointer rounded-xl font-medium px-6 py-3 transition-colors duration-200 flex items-center justify-center gap-2">
+                 <button onClick={()=>{
+                    setOpenProfile(false);
+                    handleLogout();
+                 }} className="w-full bg-red-50 text-red-600 hover:bg-red-100 cursor-pointer rounded-xl font-medium px-6 py-3 transition-colors duration-200 flex items-center justify-center gap-2">
                    Log Out
                  </button>
                </div>
