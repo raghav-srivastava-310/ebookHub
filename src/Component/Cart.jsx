@@ -14,7 +14,7 @@ function Cart() {
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("FormInfo")) || [];
-    console.log("the data is", cartItem);
+    // console.log("the data is", cartItem);
     setInfo(data);
   }, []);
  

@@ -11,7 +11,7 @@ function NewArrivals() {
    const getBooks = async ()=>{
     try {
       const res = await api.get("/api/getBooks?category=NewArivals")
-      console.log("The data in new arrivals is ",res.data);
+      // console.log("The data in new arrivals is ",res.data);
       setBooks(res.data);
     } catch (error) {
       console.error("Error fetching books:", error);

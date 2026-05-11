@@ -12,7 +12,7 @@ import { toast } from "sonner"
 export default function ProductPage() {
   const params = useParams()
   const id = params.id;
-  console.log("ID from URL:", id);
+  // console.log("ID from URL:", id);
   const [book, setBook] = useState(null)
   const [Books,setBooks] = useState([]);
   const [info,setInfo] = useState([]);
@@ -32,7 +32,7 @@ const {addToCart,cartItem,isUserPresent}=useContext(Context)
   const fetchBookById = async ()=>{
     try {
       const res = await api.get(`/api/getBooksById/${id}`)
-      console.log("The data is fetch by id id",res.data)
+      // console.log("The data is fetch by id id",res.data)
       setBook(res.data)
     } catch (error) {
       console.error("Error fetching book:", error)

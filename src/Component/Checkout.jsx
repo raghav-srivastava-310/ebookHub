@@ -48,7 +48,7 @@ function Checkout() {
       // Call backend to create order
       const res = await api.post("/api/payment/createOrder");
       const data = res.data;
-      console.log("the order data is", data)
+      // console.log("the order data is", data)
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: data.order.amount,

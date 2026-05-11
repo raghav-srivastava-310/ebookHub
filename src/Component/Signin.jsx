@@ -74,13 +74,13 @@ function Signin() {
             <GoogleLogin
             theme='outline'
             onSuccess={async (credentialResponse)=>{
-              console.log(credentialResponse); 
+              // console.log(credentialResponse); 
              try {
                const res = await api.post("/api/auth/google",{
                 token:credentialResponse.credential
               })
               const data = res.data;
-              console.log("Google login response:", data);
+              // console.log("Google login response:", data);
               localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
               router.push("/");
              } catch (error) {

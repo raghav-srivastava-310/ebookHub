@@ -66,7 +66,7 @@ const pathname = usePathname();
 
     try {
       const res = await api.post("/api/cart/addToCart",item);
-      console.log("Add to cart response:", res.data);
+      // console.log("Add to cart response:", res.data);
       const data = res.data;
 
       if(data.success){
@@ -85,7 +85,7 @@ const pathname = usePathname();
     try {
       const res = await api.get("/api/cart/getCart");
       const data = res.data;
-      console.log("Cart items fetched:", data);
+      // console.log("Cart items fetched:", data);
       if(data.cart&&data.cart.products){
         setCartItem(data.cart.products);
         

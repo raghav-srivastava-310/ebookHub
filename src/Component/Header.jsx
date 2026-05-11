@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ShoppingCart, User, Heart, Menu, House,Dot } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "@/Context/ProductContext";
-import {  useRouter } from "next/navigation";
+import {  usePathname, useRouter } from "next/navigation";
 import api from "@/app/api/axios";
 
 
@@ -15,7 +15,7 @@ export default function Header() {
   const [isMobile, setIsMobile] = useState(false);
   const [isAnimating,setAnimating]= useState(false);
   const [openProfile,setOpenProfile] = useState(false)
-
+  const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
@@ -71,19 +71,19 @@ const closeMenu = () => {
               Home
             </Link>
 
-            <a href="#toprecommended" className="hover:text-indigo-600 transition-colors duration-200">
+            <a href={`${pathname === "/" ? "#toprecommended" : "/"}`} className="hover:text-indigo-600 transition-colors duration-200">
               Top Recommended
             </a>
 
-            <a href="#ProgrammingAndTech" className="hover:text-indigo-600 transition-colors duration-200">
+            <a href={`${pathname === "/" ? "#ProgrammingAndTech" : "/"}`} className="hover:text-indigo-600 transition-colors duration-200">
               Programming And Tech
             </a>
 
-            <a href="#FreeBooks" className="hover:text-indigo-600 transition-colors duration-200">
+            <a href={`${pathname === "/" ? "#FreeBooks" : "/"}`} className="hover:text-indigo-600 transition-colors duration-200">
               Free Reading Collection
             </a>
 
-            <a href="#NewArrivals" className="hover:text-indigo-600 transition-colors duration-200">
+            <a href={`${pathname === "/" ? "#NewArrivals" : "/"}`} className="hover:text-indigo-600 transition-colors duration-200">
               New Arrivals
             </a>
           </nav>
@@ -156,22 +156,22 @@ const closeMenu = () => {
               Home
             </Link>
 
-            <a href="#toprecommended" onClick={closeMenu} className="hover:text-indigo-600 flex items-center gap-2 transition">
+            <a href={`${pathname === "/" ? "#top-recommended" : "/"}`} onClick={closeMenu} className="hover:text-indigo-600 flex items-center gap-2 transition">
                <Dot className="w-4 h-4 text-indigo-600" />
               Top Recommended
             </a>
 
-            <a href="#ProgrammingAndTech" onClick={closeMenu} className="hover:text-indigo-600 flex items-center gap-2 transition">
+            <a href={`${pathname === "/" ? "#programming-and-tech" : "/"}`} onClick={closeMenu} className="hover:text-indigo-600 flex items-center gap-2 transition">
                <Dot className="w-4 h-4 text-indigo-600" />
               Programming And Tech
             </a>
 
-            <a href="#FreeBooks" onClick={closeMenu} className="hover:text-indigo-600 flex items-center gap-2 transition">
+            <a href={`${pathname === "/" ? "#free-books" : "/"}`} onClick={closeMenu} className="hover:text-indigo-600 flex items-center gap-2 transition">
                <Dot className="w-4 h-4 text-indigo-600" />
               Free Reading Collection
             </a>
 
-            <a href="#NewArrivals" onClick={closeMenu} className="hover:text-indigo-600 flex items-center gap-2 transition">
+            <a href={`${pathname === "/" ? "#new-arrivals" : "/"}`} onClick={closeMenu} className="hover:text-indigo-600 flex items-center gap-2 transition">
                <Dot className="w-4 h-4 text-indigo-600" />
               New Arrivals
             </a>
